@@ -1,13 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Actio.Common.Events.Models
+﻿namespace Actio.Common.Events.Models
 {
     public class UserAuthenticatedEventModel : IEvent
     {
-        public string Event { get; }
+        public string Email { get; }
 
+        protected UserAuthenticatedEventModel()
+        {
+        }
 
+        public UserAuthenticatedEventModel(string email)
+        {
+            Email = email;
+        }
     }
 }
