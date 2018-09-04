@@ -3,9 +3,11 @@ using System.Threading.Tasks;
 using Actio.Common.Commands;
 using Actio.Common.Events;
 using Actio.Common.RabbitMq;
+using Autofac;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using RawRabbit;
 
 namespace Actio.Common.Services
@@ -82,18 +84,49 @@ namespace Actio.Common.Services
             return new ServiceHost(webHost);
         }
 
-        public BusBuilder SubscibeToCommand<TCommand>(TCommand command) where TCommand : ICommand
+        public BusBuilder SubscribeToCommand<TCommand>() where TCommand : ICommand
         {
-            var handler = (ICommandHandler<TCommand>) webHost.Services.GetService(typeof(ICommandHandler<TCommand>));
-            busClient.WithCommandHandlerAsync(handler);
+            using (var serviceScope = webHost.Services.CreateScope())
+            {
+                var service = serviceScope.ServiceProvider;
+
+                try
+                {
+                    //                    var handler = (IEventHandler<TEvent>)webHost.Services.GetService(typeof(IEventHandler<TEvent>));
+                    var handler = service.GetRequiredService<ICommandHandler<TCommand>>();
+                    busClient.WithCommandHandlerAsync(handler);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
+
+            
 
             return this;
         }
 
-        public BusBuilder SubscibeToEvent<TEvent>(TEvent command) where TEvent : IEvent
+        public BusBuilder SubscribeToEvent<TEvent>() where TEvent : IEvent
         {
-            var handler = (IEventHandler<TEvent>)webHost.Services.GetService(typeof(IEventHandler<TEvent>));
-            busClient.WithEventHandlerAsync(handler);
+            using (var serviceScope = webHost.Services.CreateScope())
+            {
+                var service = serviceScope.ServiceProvider;
+
+                try
+                {
+//                    var handler = (IEventHandler<TEvent>)webHost.Services.GetService(typeof(IEventHandler<TEvent>));
+                    var handler = service.GetRequiredService<IEventHandler<TEvent>>();
+                    busClient.WithEventHandlerAsync(handler);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
+
 
             return this;
         }

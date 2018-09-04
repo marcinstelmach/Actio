@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Actio.Api.Controllers
 {
@@ -7,7 +6,7 @@ namespace Actio.Api.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
             => Content("Hello From API GATEWAY !");
     }
 }

@@ -18,4 +18,10 @@
     <ProjectReference Include="..\Actio.Common\Actio.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Autofac.Extensions.DependencyInjection">
+      <HintPath>..\..\..\..\..\.nuget\packages\autofac.extensions.dependencyinjection\4.3.0\lib\netstandard2.0\Autofac.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
