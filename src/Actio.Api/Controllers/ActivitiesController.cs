@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Actio.Common.Commands.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using RawRabbit;
 
 namespace Actio.Api.Controllers
@@ -29,7 +30,6 @@ namespace Actio.Api.Controllers
         public async Task<IActionResult> Post([FromBody] CreateActivityCommandModel model)
         {
             await busClient.PublishAsync(model.SetId(Guid.NewGuid()).SetCreatedAt(DateTime.Now).SetUserId(Guid.NewGuid()));
-
             return Accepted();
         }
 

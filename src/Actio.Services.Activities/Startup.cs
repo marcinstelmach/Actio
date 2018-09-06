@@ -1,5 +1,6 @@
 ﻿using Actio.Common.Commands;
 using Actio.Common.Commands.Models;
+using Actio.Common.MongoDb;
 using Actio.Common.RabbitMq;
 using Actio.Services.Activities.Handlers.Activities;
 using Microsoft.AspNetCore.Builder;
@@ -23,7 +24,9 @@ namespace Actio.Services.Activities
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddLogging();
             services.AddRabbitMq(Configuration);
+            services.AddMongoDb(Configuration);
             services.AddScoped<ICommandHandler<CreateActivityCommandModel>, CreateActivityCommandHandler>();
         }
 
