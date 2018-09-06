@@ -10,7 +10,7 @@ namespace Actio.Services.Identity
         {
             await ServiceHost.Create<Startup>(args)
                 .UseRabbitMq()
-                .SubscribeToCommand<CreateActivityCommandModel>()
+                .SubscribeToCommand<CreateUserCommandModel>()
                 .Build()
                 .Run();
         }

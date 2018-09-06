@@ -23,5 +23,11 @@ namespace Actio.Common.Commands.Models
             CreatedAt = dateTime;
             return this;
         }
+
+        public CreateActivityCommandModel SetUserId(Guid userId)
+        {
+            UserId = userId;
+            return this;
+        }
     }
 }

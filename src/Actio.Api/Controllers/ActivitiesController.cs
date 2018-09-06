@@ -25,11 +25,26 @@ namespace Actio.Api.Controllers
 //        }
 
 
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Content("Elo");
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateActivityCommandModel model)
         {
-            await busClient.PublishAsync(model.SetId(Guid.NewGuid()).SetCreatedAt(DateTime.Now));
-            return AcceptedAtRoute("Get", new {id = model.Id});
+            model.SetId(Guid.NewGuid()).SetCreatedAt(DateTime.Now).SetUserId(Guid.NewGuid());
+            try
+            {
+                await busClient.PublishAsync(model);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+            
+            return Accepted();
         }
     }
 } 
