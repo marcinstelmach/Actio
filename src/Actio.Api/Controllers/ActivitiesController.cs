@@ -17,16 +17,16 @@ namespace Actio.Api.Controllers
             this.busClient = busClient;
         }
 
-//        [HttpGet("{id}", Name = "Get")]
-//        public async Task<IActionResult> Get(Guid id)
-//        {
-//            var command = new Activit
-//            busClient.SubscribeAsync()
-//        }
+        //        [HttpGet("{id}", Name = "Get")]
+        //        public async Task<IActionResult> Get(Guid id)
+        //        {
+        //            var command = new Activit
+        //            busClient.SubscribeAsync()
+        //        }
 
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
         {
             return Content("Elo");
         }
@@ -35,16 +35,18 @@ namespace Actio.Api.Controllers
         public async Task<IActionResult> Post([FromBody] CreateActivityCommandModel model)
         {
             model.SetId(Guid.NewGuid()).SetCreatedAt(DateTime.Now).SetUserId(Guid.NewGuid());
+            await busClient.PublishAsync(model);
+
+
             try
             {
-                await busClient.PublishAsync(model);
+                return Ok();
             }
             catch (Exception e)
             {
                 return StatusCode(500, e);
             }
-            
-            return Accepted();
         }
+
     }
-} 
+}

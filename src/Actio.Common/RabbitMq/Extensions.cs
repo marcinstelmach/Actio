@@ -12,19 +12,20 @@ namespace Actio.Common.RabbitMq
 {
     public static class Extensions
     {
-        public static Task WithCommandHandlerAsync<TCommand>(this IBusClient busClient, ICommandHandler<TCommand> handler)
+        public static Task WithCommandHandlerAsync<TCommand>(this IBusClient busClient,
+            ICommandHandler<TCommand> handler)
             where TCommand : ICommand
-            => busClient.SubscribeAsync<TCommand>(msg =>
-                handler.HandleAsync(msg), ctx =>
-                    ctx.UseConsumerConfiguration(cfg =>
-                        cfg.FromDeclaredQueue(q =>
+            => busClient.SubscribeAsync<TCommand>(async msg =>
+                await handler.HandleAsync(msg), context => 
+                    context.UseSubscribeConfiguration(cfg => 
+                        cfg.FromDeclaredQueue(q => 
                             q.WithName(GetQueueName<TCommand>()))));
 
         public static Task WithEventHandlerAsync<TEvent>(this IBusClient busClient, IEventHandler<TEvent> handler)
             where TEvent : IEvent
-            => busClient.SubscribeAsync<TEvent>(msg =>
-                handler.HandleAsync(msg), ctx =>
-                ctx.UseConsumerConfiguration(cfg =>
+            => busClient.SubscribeAsync<TEvent>(async msg =>
+                await handler.HandleAsync(msg), ctx =>
+                ctx.UseSubscribeConfiguration(cfg =>
                     cfg.FromDeclaredQueue(q =>
                         q.WithName(GetQueueName<TEvent>()))));
 
