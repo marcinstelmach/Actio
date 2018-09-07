@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -25,6 +27,25 @@ namespace Actio.Common.MongoDb
             });
 
             services.AddScoped<IDatabaseInitializer, MongoInitializer>();
+            services.AddScoped<IDatabaseSeeder, MongoSeeder>();
+        }
+
+        public static void InitilizeDatabase(this IApplicationBuilder builder)
+        {
+            using (var serviceScope = builder.ApplicationServices.CreateScope())
+            {
+                var service = serviceScope.ServiceProvider;
+
+                try
+                {
+                    service.GetRequiredService<IDatabaseInitializer>().InitializeDatabaseAsync();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
         }
     }
 }

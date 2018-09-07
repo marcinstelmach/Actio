@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
-using MongoDB.Driver;
 
 namespace Actio.Common.MongoDb
 {
@@ -13,11 +10,11 @@ namespace Actio.Common.MongoDb
     {
         private bool initialized;
         private bool seed;
-        private readonly IMongoDatabase mongoDatabase;
+        private readonly IDatabaseSeeder databaseSeeder;
 
-        public MongoInitializer(IMongoDatabase mongoDatabase, IOptions<MongoOptions> options)
+        public MongoInitializer(IDatabaseSeeder databaseSeeder, IOptions<MongoOptions> options)
         {
-            this.mongoDatabase = mongoDatabase;
+            this.databaseSeeder = databaseSeeder;
             this.seed = options.Value.Seed;
         }
 
@@ -35,7 +32,7 @@ namespace Actio.Common.MongoDb
                 return;
             }
 
-
+            await databaseSeeder.SeedAsync();
         }
 
         private void RegisterConventions()

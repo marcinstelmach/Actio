@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Actio.Common.Commands;
 using Actio.Common.Events;
 using Actio.Common.RabbitMq;
-using Autofac;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -65,7 +64,6 @@ namespace Actio.Common.Services
         {
             return new ServiceHost(webHost);
         }
-
     }
 
     public class BusBuilder : BuilderBase
@@ -92,7 +90,6 @@ namespace Actio.Common.Services
 
                 try
                 {
-                    //                    var handler = (IEventHandler<TEvent>)webHost.Services.GetService(typeof(IEventHandler<TEvent>));
                     var handler = service.GetRequiredService<ICommandHandler<TCommand>>();
                     busClient.WithCommandHandlerAsync(handler);
                 }
@@ -102,8 +99,6 @@ namespace Actio.Common.Services
                     throw;
                 }
             }
-
-            
 
             return this;
         }
@@ -116,7 +111,6 @@ namespace Actio.Common.Services
 
                 try
                 {
-//                    var handler = (IEventHandler<TEvent>)webHost.Services.GetService(typeof(IEventHandler<TEvent>));
                     var handler = service.GetRequiredService<IEventHandler<TEvent>>();
                     busClient.WithEventHandlerAsync(handler);
                 }
@@ -127,9 +121,7 @@ namespace Actio.Common.Services
                 }
             }
 
-
             return this;
         }
     }
-
 }

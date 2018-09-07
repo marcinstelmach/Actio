@@ -2,7 +2,10 @@
 using Actio.Common.Commands.Models;
 using Actio.Common.MongoDb;
 using Actio.Common.RabbitMq;
+using Actio.Services.Activities.Domain.Repositories;
 using Actio.Services.Activities.Handlers.Activities;
+using Actio.Services.Activities.Repositories;
+using Actio.Services.Activities.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +31,9 @@ namespace Actio.Services.Activities
             services.AddRabbitMq(Configuration);
             services.AddMongoDb(Configuration);
             services.AddScoped<ICommandHandler<CreateActivityCommandModel>, CreateActivityCommandHandler>();
+            services.AddScoped<IActivityRepository, ActivityRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IDatabaseSeeder, MongoCustomSeeder>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +48,7 @@ namespace Actio.Services.Activities
                 app.UseHsts();
             }
 
+            app.InitilizeDatabase();
             app.UseHttpsRedirection();
             app.UseMvc();
         }
