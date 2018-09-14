@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Actio.Common.Exceptions;
 
 namespace Actio.Services.Activities.Domain.Models
 {
@@ -19,6 +20,11 @@ namespace Actio.Services.Activities.Domain.Models
 
         public Activity(Guid id, string name, string description, Guid userId, DateTime createdAt)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ActioException(ErrorCode.EmptyActivityName);
+            }
+
             Id = id;
             Name = name;
             Description = description;

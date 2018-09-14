@@ -1,16 +1,18 @@
-﻿namespace Actio.Common.Events.Models
+﻿using Actio.Common.Exceptions;
+
+namespace Actio.Common.Events.Models
 {
     public class UserCreatedRejectedEventModel : IRejectedEvent
     {
         public string Email { get; }
         public string Reason { get; }
-        public string Code { get; }
+        public ErrorCode Code { get; }
 
         protected UserCreatedRejectedEventModel()
         {
         }
 
-        public UserCreatedRejectedEventModel(string email, string reason, string code)
+        public UserCreatedRejectedEventModel(string email, string reason, ErrorCode code)
         {
             Email = email;
             Reason = reason;

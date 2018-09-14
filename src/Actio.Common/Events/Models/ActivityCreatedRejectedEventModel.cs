@@ -1,15 +1,17 @@
-﻿namespace Actio.Common.Events.Models
+﻿using Actio.Common.Exceptions;
+
+namespace Actio.Common.Events.Models
 {
     public class ActivityCreatedRejectedEventModel : IRejectedEvent
     {
         public string Reason { get; }
-        public string Code { get; }
+        public ErrorCode Code { get; }
 
         protected ActivityCreatedRejectedEventModel()
         {
         }
 
-        public ActivityCreatedRejectedEventModel(string reason, string code)
+        public ActivityCreatedRejectedEventModel(string reason, ErrorCode code)
         {
             Reason = reason;
             Code = code;

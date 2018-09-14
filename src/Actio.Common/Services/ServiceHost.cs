@@ -35,7 +35,6 @@ namespace Actio.Common.Services
                 .UseConfiguration(config)
                 .UseStartup<TStartup>();
             return new HostBuilder(webHostBuilder.Build());
-
         }
     }
 

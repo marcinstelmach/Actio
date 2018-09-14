@@ -1,8 +1,10 @@
-﻿namespace Actio.Common.Events
+﻿using Actio.Common.Exceptions;
+
+namespace Actio.Common.Events
 {
     public interface IRejectedEvent : IEvent
     {
         string Reason { get; }
-        string Code { get; }
+        ErrorCode Code { get; }
     }
 }

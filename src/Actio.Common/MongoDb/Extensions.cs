@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Actio.Common.Exceptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace Actio.Common.MongoDb
 {
@@ -45,6 +49,19 @@ namespace Actio.Common.MongoDb
                     Console.WriteLine(e);
                     throw;
                 }
+            }
+        }
+
+        public static async Task<T> FindAndEnsureExistAsync<T>(this IMongoQueryable<T> collection, Expression<Func<T, bool>> predicate, ErrorCode errorCode)
+        {
+            try
+            {
+                return await collection
+                    .SingleOrDefaultAsync(predicate);
+            }
+            catch (InvalidOperationException)
+            {
+                throw new ActioException(errorCode);
             }
         }
     }

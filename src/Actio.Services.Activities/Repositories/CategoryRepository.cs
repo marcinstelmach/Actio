@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Actio.Common.Exceptions;
+using Actio.Common.MongoDb;
 using Actio.Services.Activities.Domain.Models;
 using Actio.Services.Activities.Domain.Repositories;
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 
 namespace Actio.Services.Activities.Repositories
 {
@@ -19,7 +20,7 @@ namespace Actio.Services.Activities.Repositories
         public async Task<Category> GetAsync(string name)
             => await Collection
                 .AsQueryable()
-                .FirstOrDefaultAsync(s => s.Name == name);
+                .FindAndEnsureExistAsync(s => s.Name == name, ErrorCode.CategoryDoesNotExist);
 
         public async Task<IEnumerable<Category>> BrowseAsync()
             => await Collection.AsQueryable().ToListAsync();

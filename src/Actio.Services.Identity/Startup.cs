@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Actio.Common.Commands;
+﻿using Actio.Common.Commands;
 using Actio.Common.Commands.Models;
+using Actio.Common.MongoDb;
 using Actio.Common.RabbitMq;
+using Actio.Services.Identity.Domain.Repositories;
+using Actio.Services.Identity.Domain.Services;
 using Actio.Services.Identity.Handlers.Users;
+using Actio.Services.Identity.Repositories;
+using Actio.Services.Identity.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Actio.Services.Identity
 {
@@ -32,6 +30,10 @@ namespace Actio.Services.Identity
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddRabbitMq(Configuration);
             services.AddScoped<ICommandHandler<CreateUserCommandModel>, CreateUserCommandHandler>();
+            services.AddMongoDb(Configuration);
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IEncrypter, Encrypter>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +48,7 @@ namespace Actio.Services.Identity
                 app.UseHsts();
             }
 
+            app.InitilizeDatabase();
             app.UseHttpsRedirection();
             app.UseMvc();
         }
