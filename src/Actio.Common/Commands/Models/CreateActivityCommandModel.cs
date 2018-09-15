@@ -5,7 +5,7 @@ namespace Actio.Common.Commands.Models
     public class CreateActivityCommandModel : IAuthenticatedCommand
     {
         public Guid UserId { get; set; }
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
         public string Category { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -14,7 +14,11 @@ namespace Actio.Common.Commands.Models
         
         public CreateActivityCommandModel SetId(Guid id)
         {
-            Id = id;
+            if (Id == Guid.Empty)
+            {
+                Id = id;
+            }
+            
             return this;
         }
 

@@ -28,7 +28,7 @@ namespace Actio.Api.Controllers
         public async Task<IActionResult> Get()
             => Ok(await activityRepository.BrowseAsync(User.Identity.GetUserIdIfExist()));
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "Get")]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
             var activity = await activityRepository.GetAsync(id);
@@ -46,13 +46,13 @@ namespace Actio.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateActivityCommandModel model)
+        public async Task<IActionResult> Post([FromBody] CreateActivityCommandModel command)
         {
-            await busClient.PublishAsync(model
+            await busClient.PublishAsync(command
                 .SetId(Guid.NewGuid())
                 .SetCreatedAt(DateTime.Now)
                 .SetUserId(User.Identity.GetUserIdIfExist()));
-            return Accepted();
+            return AcceptedAtRoute("Get", new {id = command.Id});
         }
     }
 }
