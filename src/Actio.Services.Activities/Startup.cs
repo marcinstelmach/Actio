@@ -1,4 +1,5 @@
-﻿using Actio.Common.Commands;
+﻿using Actio.Common.Auth;
+using Actio.Common.Commands;
 using Actio.Common.Commands.Models;
 using Actio.Common.MongoDb;
 using Actio.Common.RabbitMq;
@@ -28,6 +29,7 @@ namespace Actio.Services.Activities
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddLogging();
+            services.AddJwt(Configuration);
             services.AddRabbitMq(Configuration);
             services.AddMongoDb(Configuration);
             services.AddScoped<ICommandHandler<CreateActivityCommandModel>, CreateActivityCommandHandler>();
@@ -51,6 +53,7 @@ namespace Actio.Services.Activities
 
             app.InitilizeDatabase();
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

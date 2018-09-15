@@ -20,7 +20,7 @@ namespace Actio.Services.Activities.Services
         public async Task AddAsync(Guid id, Guid userId, string category, string name, string description,
             DateTime createdAt)
         {
-            var activityCategory = categoryRepository.GetAsync(category);
+            var activityCategory = await categoryRepository.GetAsync(category);
             if (activityCategory == null)
             {
                 throw new ActioException(ErrorCode.ActivityDoesntExist(category));

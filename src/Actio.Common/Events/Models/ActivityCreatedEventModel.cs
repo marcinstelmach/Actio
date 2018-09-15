@@ -13,7 +13,7 @@ namespace Actio.Common.Events.Models
         
         protected ActivityCreatedEventModel() { }
 
-        public ActivityCreatedEventModel(Guid userId, Guid id, string category, string name, string description, DateTime createdAt)
+        public ActivityCreatedEventModel(Guid id, Guid userId, string category, string name, string description, DateTime createdAt)
         {
             UserId = userId;
             Id = id;

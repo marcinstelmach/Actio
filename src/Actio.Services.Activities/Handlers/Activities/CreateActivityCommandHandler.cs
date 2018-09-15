@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Actio.Common.Commands;
 using Actio.Common.Commands.Models;
 using Actio.Common.Events.Models;

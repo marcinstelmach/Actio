@@ -30,5 +30,6 @@ namespace Actio.Common.Exceptions
         public static ErrorCode InvalidUsernameOrPassword => new ErrorCode(nameof(InvalidUsernameOrPassword));
         public static ErrorCode ActivityDoesNotExist => new ErrorCode(nameof(ActivityDoesNotExist));
         public static ErrorCode CategoryDoesNotExist => new ErrorCode(nameof(CategoryDoesNotExist));
+        public static ErrorCode InvalidGuid(string val) => new ErrorCode(nameof(InvalidGuid), $"Unable to parse '{val}' as a guid ");
     }
 }

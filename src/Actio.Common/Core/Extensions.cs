@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Security.Principal;
+using Actio.Common.Exceptions;
 
 namespace Actio.Common.Core
 {
@@ -12,6 +12,16 @@ namespace Actio.Common.Core
             var time = dateTime.Subtract(new TimeSpan(epoch.Ticks));
 
             return time.Ticks / 10000;
+        }
+
+        public static Guid GetUserIdIfExist(this IIdentity identity)
+        {
+            if (Guid.TryParse(identity.Name, out var guid))
+            {
+                return guid;
+            }
+
+            throw new ActioException(ErrorCode.InvalidGuid(identity.Name));
         }
     }
 }

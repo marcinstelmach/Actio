@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RawRabbit;
 using RawRabbit.Instantiation;
-using RawRabbit.Pipe;
 
 namespace Actio.Common.RabbitMq
 {

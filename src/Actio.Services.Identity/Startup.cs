@@ -29,13 +29,13 @@ namespace Actio.Services.Identity
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddJwt(Configuration);
+            services.AddMongoDb(Configuration);
             services.AddRabbitMq(Configuration);
             services.AddScoped<ICommandHandler<CreateUserCommandModel>, CreateUserCommandHandler>();
-            services.AddMongoDb(Configuration);
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IEncrypter, Encrypter>();
             services.AddScoped<IUserService, UserService>();
-            services.AddJwt(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
