@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Actio.Common.Commands.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using RawRabbit;
@@ -18,14 +20,6 @@ namespace Actio.Api.Controllers
             this.busClient = busClient;
         }
 
-        //        [HttpGet("{id}", Name = "Get")]
-        //        public async Task<IActionResult> Get(Guid id)
-        //        {
-        //            var command = new Activit
-        //            busClient.SubscribeAsync()
-        //        }
-
-
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateActivityCommandModel model)
         {
@@ -33,5 +27,11 @@ namespace Actio.Api.Controllers
             return Accepted();
         }
 
+        [HttpGet]
+        [Authorize]
+        public IActionResult Get()
+        {
+            return Content("yes");
+        }
     }
 }

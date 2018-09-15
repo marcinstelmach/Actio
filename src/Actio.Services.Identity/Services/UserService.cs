@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Actio.Common.Auth;
 using Actio.Common.Exceptions;
 using Actio.Services.Identity.Domain.Models;
 using Actio.Services.Identity.Domain.Repositories;
@@ -13,11 +14,13 @@ namespace Actio.Services.Identity.Services
     {
         private readonly IUserRepository userRepository;
         private readonly IEncrypter encrypter;
+        private readonly IJwtHandler jwtHandler;
 
-        public UserService(IUserRepository userRepository, IEncrypter encrypter)
+        public UserService(IUserRepository userRepository, IEncrypter encrypter, IJwtHandler jwtHandler)
         {
             this.userRepository = userRepository;
             this.encrypter = encrypter;
+            this.jwtHandler = jwtHandler;
         }
 
         public async Task RegisterAsync(string email, string password, string name)
@@ -33,7 +36,7 @@ namespace Actio.Services.Identity.Services
             await userRepository.AddAsync(user);
         }
 
-        public async Task Login(string email, string password)
+        public async Task<JsonWebToken> Login(string email, string password)
         {
             var user = await userRepository.GetAsync(email, false);
             if (user == null)
@@ -45,6 +48,8 @@ namespace Actio.Services.Identity.Services
             {
                 throw new ActioException(ErrorCode.InvalidUsernameOrPassword);
             }
+
+            return jwtHandler.Create(user.Id);
         }
     }
 }

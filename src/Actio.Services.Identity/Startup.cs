@@ -1,4 +1,5 @@
-﻿using Actio.Common.Commands;
+﻿using Actio.Common.Auth;
+using Actio.Common.Commands;
 using Actio.Common.Commands.Models;
 using Actio.Common.MongoDb;
 using Actio.Common.RabbitMq;
@@ -34,6 +35,7 @@ namespace Actio.Services.Identity
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IEncrypter, Encrypter>();
             services.AddScoped<IUserService, UserService>();
+            services.AddJwt(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
