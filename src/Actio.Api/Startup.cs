@@ -42,6 +42,7 @@ namespace Actio.Api
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

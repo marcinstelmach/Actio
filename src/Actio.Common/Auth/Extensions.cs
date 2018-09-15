@@ -14,7 +14,7 @@ namespace Actio.Common.Auth
             var section = configuration.GetSection("jwt");
             section.Bind(options);
             services.Configure<JwtOptions>(section);
-            services.AddSingleton<IJwtHandler, JwtHandler>();
+            services.AddSingleton<IJwtManager, JwtManager>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(cfg =>
                 {
@@ -23,7 +23,6 @@ namespace Actio.Common.Auth
                     cfg.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateAudience = false,
-                        ValidateIssuer = false,
                         ValidIssuer = options.Issuer,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.SecretKey))
                     };

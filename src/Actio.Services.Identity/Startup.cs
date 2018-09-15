@@ -52,6 +52,7 @@ namespace Actio.Services.Identity
 
             app.InitilizeDatabase();
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

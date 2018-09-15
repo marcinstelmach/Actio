@@ -14,13 +14,13 @@ namespace Actio.Services.Identity.Services
     {
         private readonly IUserRepository userRepository;
         private readonly IEncrypter encrypter;
-        private readonly IJwtHandler jwtHandler;
+        private readonly IJwtManager jwtManager;
 
-        public UserService(IUserRepository userRepository, IEncrypter encrypter, IJwtHandler jwtHandler)
+        public UserService(IUserRepository userRepository, IEncrypter encrypter, IJwtManager jwtManager)
         {
             this.userRepository = userRepository;
             this.encrypter = encrypter;
-            this.jwtHandler = jwtHandler;
+            this.jwtManager = jwtManager;
         }
 
         public async Task RegisterAsync(string email, string password, string name)
@@ -49,7 +49,7 @@ namespace Actio.Services.Identity.Services
                 throw new ActioException(ErrorCode.InvalidUsernameOrPassword);
             }
 
-            return jwtHandler.Create(user.Id);
+            return jwtManager.GenerateToken(user.Id);
         }
     }
 }
