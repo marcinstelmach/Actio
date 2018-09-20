@@ -14,4 +14,8 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Actio.Services.Identity\Actio.Services.Identity.csproj" />
+  </ItemGroup>
+
 </Project>
